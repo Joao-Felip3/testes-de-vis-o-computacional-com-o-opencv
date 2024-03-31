@@ -1,8 +1,8 @@
 import cv2 as cv 
 import os 
 import numpy as np
-# liata com os nomes das pessoas as quais cada pasta de imagens pertence 
-# é importante colocar os mesmos nomes que estão como título das pastas de imagens
+# lista com os nomes das pessoas às quais cada pasta de imagens pertence 
+# É importante colocar os mesmos nomes que estão como título das pastas de imagens
 people = ["name1" "name2", "name3"]
 #chama o modelo haarcascade para detecção de imagens 
 haar_cascade = cv.CascadeClassifier("haar_faces_model.xml")
@@ -27,10 +27,10 @@ def create_train():
         for img_name in os.listdir(path):
             img_path = os.path.join(path, img_name)
             
-           #lê a imagem 
+          
             img_array = cv.imread(img_path)
 
-            # vesrifica se a leitura da imagem teve Êxito
+            # verifica se a leitura da imagem teve Êxito
             if img_array is None:
                 print(f"Failed to read image: {img_path}")
                 continue
@@ -41,7 +41,7 @@ def create_train():
            
             faces_rect = haar_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=4)
 
-            # Extrai as faces e nomes correspindentes
+            # Extrai as faces e nomes correspondentes
             for (x, y, w, h) in faces_rect:
                 faces_roi = gray[y:y+h, x:x+w]
                 features.append(faces_roi)
@@ -51,9 +51,10 @@ def create_train():
 create_train()
 
 
-
+# converte as listas de nomes e características para o formato de array numpy 
 features= np.array(features, dtype= "object")
 labels = np.array(labels)
+# Chama  o modelo de reconhecimento de faces pré-treinado do opencv e envia os dados das imagens treinadas
 face_recognizer = cv.face.LBPHFaceRecognizer_create()
 face_recognizer.train(features,labels)
 
